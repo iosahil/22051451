@@ -1,12 +1,12 @@
 ## Postman Screeenshots
 
-Question 1:
+### Question 1:
 
 For 'http://127.0.0.1:9876/numbers/e':
 ![image](https://github.com/user-attachments/assets/faa58b68-7b3f-4ee6-810a-0d82f5baf78d)
 
 
-Question 2:
+### Question 2:
 
 For 'http://127.0.0.1:8080/users':
 ![image](https://github.com/user-attachments/assets/6d9548f1-f751-4f7b-af19-7b8d6bd2af4b)
