@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 import requests
 import statistics
+import json
 
 app = Flask(__name__)
 
@@ -15,7 +16,18 @@ TYPE_MAP = {
     'r': 'rand'
 }
 
-ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiZXhwIjoxNzQzNjAxNTYxLCJpYXQiOjE3NDM2MDEyNjEsImlzcyI6IkFmZm9yZG1lZCIsImp0aSI6IjM1MDliMjRlLWI3N2UtNDEzYi1iODJkLWYxMTcxNTA4ZmFjOSIsInN1YiI6IjIyMDUxNDUxQGtpaXQuYWMuaW4ifSwiZW1haWwiOiIyMjA1MTQ1MUBraWl0LmFjLmluIiwibmFtZSI6InNhaGlsIGt1bWFyIGNob3VkaGFyeSIsInJvbGxObyI6IjIyMDUxNDUxIiwiYWNjZXNzQ29kZSI6Im53cHdyWiIsImNsaWVudElEIjoiMzUwOWIyNGUtYjc3ZS00MTNiLWI4MmQtZjExNzE1MDhmYWM5IiwiY2xpZW50U2VjcmV0IjoiTm5US21Cem1nY3pKYWdTRSJ9.trI8q2wwiQF_zcqmYG2vWM9c9C4B1k_ya5uWxDbheVk"
+
+def load_access_token():
+    try:
+        with open('auth_token.json', 'r') as f:
+            token_data = json.load(f)
+            return token_data.get('access_token')
+    except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
+        print(f"Error loading access token: {e}")
+        return None
+
+
+ACCESS_TOKEN = load_access_token()
 
 
 @app.route('/numbers/<type_code>', methods=['GET'])

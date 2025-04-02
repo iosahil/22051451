@@ -1,17 +1,28 @@
 from flask import Flask, jsonify, request
 import requests
+import json
 
 app = Flask(__name__)
 
 # Server URL
 BASE_URL = "http://20.244.56.144/evaluation-service"
 
-# Authorization token
-TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiZXhwIjoxNzQzNjAzMzY4LCJpYXQiOjE3NDM2MDMwNjgsImlzcyI6IkFmZm9yZG1lZCIsImp0aSI6IjM1MDliMjRlLWI3N2UtNDEzYi1iODJkLWYxMTcxNTA4ZmFjOSIsInN1YiI6IjIyMDUxNDUxQGtpaXQuYWMuaW4ifSwiZW1haWwiOiIyMjA1MTQ1MUBraWl0LmFjLmluIiwibmFtZSI6InNhaGlsIGt1bWFyIGNob3VkaGFyeSIsInJvbGxObyI6IjIyMDUxNDUxIiwiYWNjZXNzQ29kZSI6Im53cHdyWiIsImNsaWVudElEIjoiMzUwOWIyNGUtYjc3ZS00MTNiLWI4MmQtZjExNzE1MDhmYWM5IiwiY2xpZW50U2VjcmV0IjoiTm5US21Cem1nY3pKYWdTRSJ9.yZgKRsc23ZSyuv0UTSUUlzbdgzH3AvH_yr4SDOzqy1M"
+
+def load_access_token():
+    try:
+        with open('auth_token.json', 'r') as f:
+            token_data = json.load(f)
+            return token_data.get('access_token')
+    except (FileNotFoundError, json.JSONDecodeError, KeyError) as e:
+        print(f"Error loading access token: {e}")
+        return None
+
+
+ACCESS_TOKEN = load_access_token()
 
 
 def get_api_data(endpoint):
-    headers = {"Authorization": f"Bearer {TOKEN}"}
+    headers = {"Authorization": f"Bearer {ACCESS_TOKEN}"}
     try:
         response = requests.get(f"{BASE_URL}/{endpoint}", headers=headers)
         response.raise_for_status()
